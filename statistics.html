@@ -1,0 +1,520 @@
+<div class="row">
+	<div class="col-md-12">
+		<!-- panels here -->
+		<span data-ng-show="tokenInvalid == true">
+			<div class="alert alert-danger" role="alert"><strong>Invalid token:</strong> You are not allowed to view this group because the token is or became invalid.</div>
+		</span>
+		<span data-ng-show="tokenAuth != null">
+			<div class="alert alert-warning" role="alert"><strong>Shared group profile:</strong> This is a shared statistics report of the group <strong>{{stats.global_stats.shared_group_name}}</strong> created by the hoster of this WhatsSpy Public instance.</div>
+		</span>
+		<div class="whatsspy-no-information-data" data-ng-show="stats == null && tokenInvalid != true">
+			<span data-ng-show="showLoader == false">Not enough information available ...</span>
+			<span data-ng-show="showLoader == true">Loading information ...</span>
+		</div>
+		<span data-ng-show="authenticated == true && stats.global_stats != null">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter options</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<select class="form-control" data-ng-model="filterGroup" data-ng-options="group.gid as group.name for group in groups" ></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Notes</h3>
+						</div>
+						<div class="panel-body">
+							<span data-ng-show="filterGroup == null">
+							All information on this page does not update. You can refresh by clicking the gray timestamp in "status".
+							</span>
+							<span data-ng-show="filterGroup != null">
+								<div class="row">
+					    			<div class="col-sm-8 col-xs-12">
+					    				<div class="input-group whatsspy-copy-token" data-ng-click="copyToClipboard(getTokenUrl('group', getGroupById(filterGroup).read_only_token))">
+					        				<span class="input-group-addon"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></span>  
+							    			<input type="text" class="form-control" id="shareUrl" data-ng-value="getGroupById(filterGroup).read_only_token | emptyToken" disabled="disabled">
+							    		</div>
+					    			</div>
+					    			<div class="col-sm-4 col-xs-12">
+					    				<button type="button" class="btn btn-primary" data-ng-click="generateReadOnlyToken('group', null, getGroupById(filterGroup))">
+					    					 Generate
+					    				</button>
+					    				<button type="button" class="btn btn-danger" data-ng-click="resetReadOnlyToken('group', null, getGroupById(filterGroup))">
+					    					 Reset
+					    				</button>
+					    			</div>
+					    		</div>    			
+					    		<small>
+					    			Sharing this statistics group page URL's will only work if WhatsSpy Public is available from the internet.
+					    			Click on the token to copy the link.
+					    		</small>
+					    	</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+		<span data-ng-show="stats.global_stats != null">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> WhatsSpy Public Statistics</h3>
+						</div>
+						<div class="panel-body whatsspy-statistics-first-row">
+							<h5>Tracker status</h5>
+							<table class="table table-striped table-bordered ">
+						      <tbody>
+						        <tr>
+						          <th class="whatsspy-statistics-table-normal">Tracker sessions </th>
+						          <td>{{stats.global_stats.tracker_session_count}}</td>
+						        </tr>
+						        <tr>
+						          <th>First tracker session (start of information flow)</th>
+						          <td>{{stats.global_stats.first_tracker_session | staticDatetime}}</td>
+						        </tr>
+						       </tbody>
+						    </table>
+						    <h5>Database content</h5>
+						    <table class="table table-striped table-bordered ">
+						      <tbody>
+						        <tr>
+						          <th class="whatsspy-statistics-table-normal">Number of accounts</th>
+						          <td>{{stats.global_stats.user_count}} accounts</td>
+						        </tr>
+						        <tr>
+						          <th>Online/offline statuses gathered</th>
+						          <td>{{stats.global_stats.user_status_count}} statuses</td>
+						        </tr>
+						        <tr>
+						          <th>Total time spent on WhatsApp by all contacts</th>
+						          <td>{{stats.global_stats.user_status_count_time | timeFormat}}</td>
+						        </tr>
+						        <tr>
+						          <th>Profile pictures gathered</th>
+						          <td>{{stats.global_stats.profilepicture_count}} profile pictures</td>
+						        </tr>
+						        <tr>
+						          <th>Status messages gathered</th>
+						          <td>{{stats.global_stats.statusmessage_count}} status messages</td>
+						        </tr>
+						      </tbody>
+						    </table>
+						    
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Privacy awareness</h3>
+						</div>
+						<div class="panel-body whatsspy-statistics-first-row">
+							<h5>Privacy settings of tracked users</h5>
+							<table class="table table-striped table-bordered ">
+								<tbody>
+								<tr>
+								  <th>Privacy option</th>
+								  <th>contacts/nobody</th>
+								  <th>everyone</th>
+								</tr>
+								<tr>
+								  <td>Lastseen*</td>
+								  <td><span class="label label-danger">{{stats.global_stats.account_lastseen_privacy_enabled}} users</span></td>
+								  <td><span class="label label-success">{{stats.global_stats.account_lastseen_privacy_disabled}} users</span></td>
+								</tr>
+								<tr>
+								  <td>Status messages</td>
+								  <td><span class="label label-danger">{{stats.global_stats.account_statusmessage_privacy_enabled}} users</span></td>
+								  <td><span class="label label-success">{{stats.global_stats.account_statusmessage_privacy_disabled}} users</span></td>
+								</tr>
+								<tr>
+								  <td>Profile pictures</td>
+								  <td><span class="label label-danger">{{stats.global_stats.account_profilepic_privacy_enabled}} users</span></td>
+								  <td><span class="label label-success">{{stats.global_stats.account_profilepic_privacy_disabled}} users</span></td>
+								</tr>
+								</tbody>
+							</table>
+							<h5>Privacy changes while tracking</h5>
+							<table class="table table-striped table-bordered ">
+								<tbody>
+							        <tr>
+							          <th class="whatsspy-statistics-table-normal">Lastseen privacy changes</th>
+							          <td>{{stats.global_stats.lastseen_privacy_count}} changes</td>
+							        </tr>
+							        <tr>
+							          <th>Profile picture privacy changes</th>
+							          <td>{{stats.global_stats.profilepic_privacy_count}} changes</td>
+							        </tr>
+							        <tr>
+							          <th>Status message privacy changes</th>
+							          <td>{{stats.global_stats.statusmessage_privacy_count}} changes</td>
+							        </tr>
+								</tbody>
+							</table>
+							<small>* The lastseen option does not protect you against tracking online/offline statuses. Check this <a href="https://maikel.pro/blog/en-whatsapp-privacy-problem-explained-in-detail/" target="_blank">article</a> explaining the problem in detail.</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+		<span data-ng-show="stats.user_status_analytics_user != null">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> WhatsApp usage (online time / opening) compared per user</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12 whatsspy-statistics-piechart-control">
+					    				<button data-ng-disabled="stats.generated.showPieChart == 'today'" data-ng-click="stats.generated.showPieChart = 'today';" type="button" class="btn btn-info">Show today</button>
+					    				<button data-ng-disabled="stats.generated.showPieChart == '7days'" data-ng-click="stats.generated.showPieChart = '7days';" type="button" class="btn btn-info">Show 7 days</button>
+					    				<button data-ng-disabled="stats.generated.showPieChart == '14days'" data-ng-click="stats.generated.showPieChart = '14days';" type="button" class="btn btn-info">Show 14 days</button>
+					    				<button data-ng-disabled="stats.generated.showPieChart == 'all'" data-ng-click="stats.generated.showPieChart = 'all';" type="button" class="btn btn-info">Show all</button>
+									</div>
+								</div>
+							<div class="row">
+								<div class="col-md-6">
+									<span data-ng-show="stats.generated.showPieChart == 'all'">
+										<h4 class="whatsspy-stat-head">Opening WhatsApp - All</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-count-all"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('count_all')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusCount('count_all')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == 'today'">
+										<h4 class="whatsspy-stat-head">Opening WhatsApp - Today</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-count-today"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('count_today')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusCount('count_today')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == '7days'">
+										<h4 class="whatsspy-stat-head">Opening WhatsApp - Last 7 days</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-count-7day"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('count_7day')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusCount('count_7day')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == '14days'">
+										<h4 class="whatsspy-stat-head">Opening WhatsApp - Last 14 days</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-count-14day"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('count_14day')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusCount('count_14day')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+								</div>
+								<div class="col-md-6">
+									<span data-ng-show="stats.generated.showPieChart == 'all'">
+										<h4 class="whatsspy-stat-head">Online time in WhatsApp - All</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-time-all"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('seconds_all')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusTime('seconds_all')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == 'today'">
+										<h4 class="whatsspy-stat-head">Online time in WhatsApp - Today</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-time-today"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('seconds_today')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusTime('seconds_today')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == '7days'">
+										<h4 class="whatsspy-stat-head">Online time in WhatsApp - Last 7 days</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-time-7day"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('seconds_7day')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusTime('seconds_7day')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+									<span data-ng-show="stats.generated.showPieChart == '14days'">
+										<h4 class="whatsspy-stat-head">Online time in WhatsApp - Last 14 days</h4>
+										<nvd3-pie-chart
+											data="stats.user_status_analytics_user"
+											id="pieChart-user-activities-time-14day"
+											width="600"
+											height="600"
+											x="xFunction()"
+											y="yFunction('seconds_14day')"
+											margin="{left:0,top:15,bottom:0,right:0}"
+											labelType="percent"
+											tooltips="true"
+											noData="No information available"
+											tooltipcontent="tooltipUserStatusTime('seconds_14day')"
+											showLabels="true">
+											<svg></svg>
+										</nvd3-pie-chart>
+									</span>
+								</div>	
+							</div>
+							Please note that every online session can be off by 0-4 seconds based on WhatsApp, your machine and your network activity. This means all this data is the <strong>maximum</strong> time they spent on WhatsApp.
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+		<span data-ng-show="stats.user_status_analytics_time != null">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> WhatsApp usage (online time / opening) compared per timeunit</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<span data-ng-show="stats.generated.showWeekday == true">
+						    			<h4>Opening WhatsApp per weekday</h4>
+						    			<nvd3-multi-bar-chart
+									    	data="stats.generated.chart_weekday_status_count_all"
+									        id="opened-overview-graph-weekday"
+									        tooltipcontent="barChartToolTip('weekday', 'times')"
+									        width="500"
+											height="300"
+									        showXAxis="false"
+									        showYAxis="true"
+									        margin=" {top:5,bottom:5,right:0}"
+									        showLegend="true"
+									        tooltips="true"
+									        stacked="true">
+									        	<svg></svg>
+									    </nvd3-multi-bar-chart>
+									</span>
+									<span data-ng-show="stats.generated.showHour == true">
+						    			<h4>Opening WhatsApp per hour</h4>
+						    			<nvd3-multi-bar-chart
+									    	data="stats.generated.chart_hour_status_count_all"
+									        id="opened-overview-graph-hour"
+									        tooltipcontent="barChartToolTip('hour', 'times')"
+									        width="500"
+											height="300"
+									        showXAxis="false"
+									        showYAxis="true"
+									        margin=" {top:5,bottom:5,right:0}"
+									        showLegend="true"
+									        tooltips="true"
+									        stacked="true">
+									        	<svg></svg>
+									    </nvd3-multi-bar-chart>
+									</span>
+								</div>
+								<div class="col-md-6">
+									<div class="whatsspy-bar-graph-toggle">
+					    				<button data-ng-show="stats.generated.showHour != true" data-ng-click="stats.generated.showWeekday = false; stats.generated.showHour = true; " type="button" class="btn btn-info">Show per hour</button>
+					    				<button data-ng-show="stats.generated.showWeekday != true" data-ng-click="stats.generated.showWeekday = true; stats.generated.showHour = false" type="button" class="btn btn-info">Show per weekday</button>
+					    			</div>
+					    			<span data-ng-show="stats.generated.showWeekday == true">
+						    			<h4>Time on WhatsApp per weekday</h4>
+						    			<nvd3-multi-bar-chart
+									    	data="stats.generated.chart_weekday_status_time_all"
+									        id="time-overview-graph-weekday"
+									        tooltipcontent="barChartToolTip('weekday', 'minutes')"
+									        width="500"
+											height="300"
+									        showXAxis="false"
+									        showYAxis="true"
+									        margin=" {top:5,bottom:5,right:0}"
+									        showLegend="true"
+									        tooltips="true"
+									        stacked="true">
+									        	<svg></svg>
+									    </nvd3-multi-bar-chart>
+									</span>
+									<span data-ng-show="stats.generated.showHour == true">
+						    			<h4>Time on WhatsApp per hour</h4>
+						    			<nvd3-multi-bar-chart
+									    	data="stats.generated.chart_hour_status_time_all"
+									        id="time-overview-graph-hour"
+									        tooltipcontent="barChartToolTip('hour', 'minutes')"
+									        width="500"
+											height="300"
+									        showXAxis="false"
+									        showYAxis="true"
+									        margin=" {top:5,bottom:5,right:0}"
+									        showLegend="true"
+									        tooltips="true"
+									        stacked="true">
+									        	<svg></svg>
+									    </nvd3-multi-bar-chart>
+									</span>
+								</div>	
+							</div>
+							<br />
+							<br />
+						</div>
+					</div>	
+				</div>
+			</div>
+		</span>
+		<span data-ng-show="stats.top_usage_users != null">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Top {{showTopUsers}} tracked users</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<button data-ng-show="stats.top_usage_users.meta.count <= 20" data-ng-disabled="showTopUsers == 5" data-ng-click="showTopUsers = 5;" type="button" class="btn btn-primary">Top 5</button> 
+									<button data-ng-disabled="showTopUsers == 10" data-ng-click="showTopUsers = 10;" type="button" class="btn btn-primary">Top 10</button> 
+									<button data-ng-show="stats.top_usage_users.meta.count >= 20" data-ng-disabled="showTopUsers == 20" data-ng-click="showTopUsers = 20;" type="button" class="btn btn-primary">Top 20</button> 
+									<button data-ng-show="stats.top_usage_users.meta.count >= 30" data-ng-disabled="showTopUsers == 30" data-ng-click="showTopUsers = 30;" type="button" class="btn btn-primary">Top 30</button> 
+									<button data-ng-show="stats.top_usage_users.meta.count >= 50" data-ng-disabled="showTopUsers == 50" data-ng-click="showTopUsers = 50;" type="button" class="btn btn-primary">Top 50</button> 
+									<button data-ng-show="stats.top_usage_users.meta.count >= 100" data-ng-disabled="showTopUsers == 100" data-ng-click="showTopUsers = 100;" type="button" class="btn btn-primary">Top 100</button> 
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<h4>Top {{showTopUsers}} most active users per day - {{stats.generated.top10DayChoice}}</h4>
+									<button data-ng-disabled="stats.generated.top10DayChoice == 'today'" data-ng-click="stats.generated.top10DayChoice = 'today';" type="button" class="btn btn-info">Today</button>
+									<button data-ng-disabled="stats.generated.top10DayChoice == 'yesterday'" data-ng-click="stats.generated.top10DayChoice = 'yesterday';" type="button" class="btn btn-info">Yesterday</button>
+									<button data-ng-disabled="stats.generated.top10DayChoice == '2days_ago'" data-ng-click="stats.generated.top10DayChoice = '2days_ago';" type="button" class="btn btn-info">2 days ago</button>
+									<button data-ng-disabled="stats.generated.top10DayChoice == '3days_ago'" data-ng-click="stats.generated.top10DayChoice = '3days_ago';" type="button" class="btn btn-info">3 days ago</button>
+									<button data-ng-disabled="stats.generated.top10DayChoice == '4days_ago'" data-ng-click="stats.generated.top10DayChoice = '4days_ago';" type="button" class="btn btn-info">4 days ago</button>
+									<br />
+									<br />
+									<table class="table table-striped table-bordered ">
+										<tbody>
+										<tr>
+										  <th>Tracked contact</th>
+										  <th>Time online</th>
+										  <th>Opened WA</th>
+										</tr>
+										<tr data-ng-repeat="user in stats.top_usage_users[stats.generated.top10DayChoice]">
+										  <td>
+										  	<a data-ng-show="tokenAuth == null" data-ng-href="#/overview#{{user.id}}" class="whatsspy-clean-link"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.name | emptyName}}</a>
+
+										  	<span data-ng-show="tokenAuth != null">
+										  	<span data-ng-show="tokenAuth != null" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.name | emptyName}}</span>
+										  </td>
+										  <td>{{user.online | timeFormat}}</td>
+										  <td>{{user.count}} times</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<h4>Top {{showTopUsers}} most active users in total - {{stats.generated.top10TimeChoice}}</h4>
+									<button data-ng-disabled="stats.generated.top10TimeChoice == 'alltime'" data-ng-click="stats.generated.top10TimeChoice = 'alltime';" type="button" class="btn btn-info">All</button>
+									<button data-ng-disabled="stats.generated.top10TimeChoice == '31days'" data-ng-click="stats.generated.top10TimeChoice = '31days';" type="button" class="btn btn-info">31 days</button>
+									<button data-ng-disabled="stats.generated.top10TimeChoice == '14days'" data-ng-click="stats.generated.top10TimeChoice = '14days';" type="button" class="btn btn-info">14 days</button>
+									<button data-ng-disabled="stats.generated.top10TimeChoice == '7days'" data-ng-click="stats.generated.top10TimeChoice = '7days';" type="button" class="btn btn-info">7 days</button>
+									<button data-ng-disabled="stats.generated.top10TimeChoice == '24hours'" data-ng-click="stats.generated.top10TimeChoice = '24hours';" type="button" class="btn btn-info">24 hours</button>
+									<br />
+									<br />
+									<table class="table table-striped table-bordered ">
+										<tbody>
+										<tr>
+										  <th>Tracked contact</th>
+										  <th>Time online</th>
+										  <th>Opened WA</th>
+										</tr>
+										<tr data-ng-repeat="user in stats.top_usage_users[stats.generated.top10TimeChoice]">
+										  <td>
+										  	<a data-ng-show="tokenAuth == null" data-ng-href="#/overview#{{user.id}}" class="whatsspy-clean-link"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.name | emptyName}}</a>
+
+										  	<span data-ng-show="tokenAuth != null">
+										  	<span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.name | emptyName}}
+										  </span>
+										  </td>
+										  <td>{{user.online | timeFormat}}</td>
+										  <td>{{user.count}} times</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>	
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</span>
+	</div>
+</div>

@@ -1,0 +1,93 @@
+<div class="row">
+	<div class="col-md-12" data-ng-show="accounts != null">
+		<div class="row">	
+			<div class="col-md-4">
+				<div class="well whatsspy-header-box whatsspy-compare-panel whatsspy-compare-panel-add">
+					<h4><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> Select candidate(s)</h4>
+					<br />
+					<p>
+						<h4>Add user to comparison</h4>
+						<table class="table table-align-left">
+							<tbody>
+								<tr>
+									<td>
+										<select class="form-control" ng-model="selectUserOption" ng-options="account as account.name for account in accounts"></select>
+									</td>
+									<td class="whatsspy-compare-add">
+										<button class="btn btn-default" data-ng-click="addUserToComparison(selectUserOption)">Add</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<h4>Add group to comparison</h4>
+						<table class="table table-align-left">
+							<tbody>
+								<tr>
+									<td>
+										<select class="form-control" data-ng-model="selectGroupOption" data-ng-options="group.gid as group.name for group in groups | noGroupFilter" ></select>
+									</td>
+									<td class="whatsspy-compare-add">
+										<button class="btn btn-default" data-ng-click="addGroupToComparison(selectGroupOption)">Add</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</p>
+					<p>
+						<small>Loading large groups may cause a temporary browser freeze due to the vast amount of information.</small>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="well whatsspy-header-box whatsspy-compare-panel">
+					<h4><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Current candidates in the comparison:</h4>
+					<div class="whatsspy-scrollable-table-compare">
+						<table class="table table-striped table-align-left">
+							<thead>
+								<tr>
+									<th>Candidate / Privacy settings</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="accountId in comparedAccountsIds">
+									<td>
+										<div class="row">
+											<div class="col-md-2 hidden-xs">
+												<img data-ng-cloak class="img-responsive img-rounded" title="Indexed image at {{getAccountById(accountId).profilepic_updated | staticDatetime}}" data-ng-show="getAccountById(accountId).profilepic != null" data-ng-src="{{(getAccountById(accountId).profilepic != null) && getImageURL(getAccountById(accountId).profilepic) || ''}}" />
+												<img data-ng-cloak class="img-responsive img-rounded" data-ng-show="getAccountById(accountId).profilepic == null" src="images/profile_pic_placeholder.png" />
+											</div>
+											<div class="col-md-8">
+												<a data-ng-href="#/overview#{{accountId}}" class="whatsspy-clean-link"><strong>{{getAccountById(accountId).name}}</strong></a>
+												({{getAccountById(accountId).id}})
+												<span data-ng-repeat="group in getAccountById(accountId).groups">
+													<span class="label label-default">{{getGroupName(group.gid)}}</span>
+												</span>
+												<br />
+												<br />
+												<span data-ng-show="getAccountById(accountId).lastseen_privacy == true" title="This privacy setting may be contacts or nobody. This can't be detected." class="label label-danger">last seen : contacts*</span>
+												<span data-ng-show="getAccountById(accountId).lastseen_privacy == false" class="label label-success">last seen : everyone</span>
+												<span data-ng-show="getAccountById(accountId).statusmessage_privacy == true" title="This privacy setting may be contacts or nobody. This can't be detected." class="label label-danger">status messages : contacts*</span>
+												<span data-ng-show="getAccountById(accountId).statusmessage_privacy == false" class="label label-success">status messages : everyone</span>
+												<span data-ng-show="getAccountById(accountId).profilepic_privacy == true" title="This privacy setting may be contacts or nobody. This can't be detected." class="label label-danger">profile pic : contacts*</span>
+												<span data-ng-show="getAccountById(accountId).profilepic_privacy == false" class="label label-success">profile pic : everyone</span>
+											</div>
+											<div class="col-md-2">
+												<button type="button" data-ng-click="removeFromComparison(accountId)" class="btn btn-danger">Remove</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-show="timelineLoaded" class="whatsspy-compare-timeline">
+			<vis-timeline data="timelineData" options="timelineOptions" events="graphEvents"></vis-timeline>
+		</div>
+	</div>
+	<div class="col-md-12" data-ng-show="accounts == null" class="compare-loading">
+		Loading account information ...
+	</div>
+</div>
