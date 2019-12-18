@@ -102,7 +102,7 @@
                             <br />
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'online'" class="label label-success">Tracker online</span>
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'offline'" class="label label-danger">Tracker offline</span>
-                            <span data-ng-cloak data-ng-show="trackerStatus() == 'unknown'" class="label label-default">not authenticated</span>
+                            <span data-ng-cloak data-ng-show="trackerStatus() == 'unknown'" class="label label-default">Nicht Eingeloggt</span>
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'online'"class="label label-info">{{accounts.length}} users</span>
                             <span data-ng-show="trackerStatus() != 'unknown'" data-ng-click="refreshContent()" data-ng-cloak class="label label-default whatsspy-data-management" data-toggle="tooltip" data-placement="bottom" title="Click to refresh the data loaded into the web-app."><span am-time-ago="loadedTime"></span></span>
                         </div>
@@ -110,7 +110,14 @@
                 </div> 
             </header>
             <div data-ng-show="error == true" class="alert alert-danger" role="alert">
-                <strong>It seems like WhatsSpy Public is not working correctly.</strong> Please take a look at <a target="_blank" href="https://gitlab.maikel.pro/maikeldus/WhatsSpy-Public/wikis/troubleshooting">the troubleshooting page</a>.
+                <strong>Diese Software war als Proof of Concept von maikel veröffentlicht worden.</strong><br/>
+                <span>Der Support ist eingestellt...</span><br/>
+                <span>Als Programmierer mit Kenntnissen in PHP (Programmiersprache) und PostgreSQL (Datenbank, in der Sie Dinge speichern) können Sie WhatsSpy Public in wenigen Minuten einrichten. Stellen Sie sich die folgenden Aktivitäten vor (nur um Ihnen eine Idee zu geben):
+Abrufen des Geheimnisses von Ihrem Mobiltelefon oder WART (10 Minuten).
+Installieren von WhatsSpy Public auf Ihrem Server (20 Minuten).
+Einrichten der Datenbank (5 Minuten).
+Hinzufügen von Benutzern (5 Minuten).
+Starten des Trackers (5 Minuten).</span><br/>
                 <br />
                 <br />
                 <strong><a href="api/?whatsspy=getStats">View error</a></strong>
