@@ -99,7 +99,7 @@
                     <div class="col-md-2 col-xs-12" data-ng-hide="isInPage('public') == true">
                         <div id="status">
                             <strong><span class="setting-icon glyphicon glyphicon-tasks"></span> status</strong>
-                            <br />
+                            <hr />
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'online'" class="label label-success">Tracker online</span>
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'offline'" class="label label-danger">Tracker offline</span>
                             <span data-ng-cloak data-ng-show="trackerStatus() == 'unknown'" class="label label-default">Nicht Eingeloggt</span>
@@ -110,11 +110,12 @@
                 </div> 
             </header>
             <div data-ng-show="error == true" class="alert alert-danger" role="alert">
-                <strong>Diese Software war als Proof of Concept von maikel veröffentlicht worden.</strong> Hier gehts zu seinem Blog >>> <a href="https://maikel.pro/">Minimal Mistake verlassen</a>
+                <hr/>
+                <strong>Diese Software war als Proof of Concept von <a href="https://maikel.pro/" target="_blank">Maikel</a>veröffentlicht worden.</strong>
                 <span>Der Support ist eingestellt...</span><br/>
-                <span>
-                    Als Programmierer mit Kenntnissen in PHP (Programmiersprache) und PostgreSQL 
-                    (Datenbank, in der Sie Dinge speichern) können Sie WhatsSpy 
+                <span><br/>
+                    Als Programmierer mit Kenntnissen in PHP (Programmiersprache) und PostgreSQL<br/>
+                    (Datenbank, in der Sie Dinge speichern) können Sie WhatsSpy<br/>
                     Public in wenigen Minuten einrichten.
                     <ul>
                         <li>Abrufen des Geheimnisses von Ihrem Mobiltelefon oder WART (10 Minuten).</li>
