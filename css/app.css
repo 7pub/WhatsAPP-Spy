@@ -30,7 +30,7 @@ body {
 header {
 	margin-bottom: 50px;
 	margin-top: 15px;
-	color: white;
+	color: #232323; /**fff*/
 }
 
 .icon-container {

@@ -26,25 +26,26 @@
 			<div class="col-md-9">
 				<div class="well whatsspy-header-box">
 					<p>
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> The system is checking all statuses <span data-ng-show="accounts.length > 0">from {{accounts.length}} contacts</span> since {{trackerStart | staticDatetime}}
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Das System prüft seit <code>{{trackerStart | staticDatetime}}</code><span data-ng-show="accounts.length > 0"><code>{accounts.length}}</code>Kontake</span>
 					</p>
 					<p>
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Contacts that have "last seen" set to "nobody" will be <a href="https://maikel.pro/blog/en-whatsapp-privacy-problem-explained-in-detail/" target="_blank">tracked anyway</a>.
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Kontakte, die "Zuletzt gesehen" auf "Niemand" gesetzt haben, werden trotzdem verfolgt</a>.
 					</p>
 					<p>
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> The information on this page is not live, you can refresh this page by clicking the gray timestamp in the "status" panel.
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Die Informationen auf dieser Seite sind nicht aktuell. Sie können diese Seite aktualisieren, indem Sie im Bereich "Status" auf den grauen Zeitstempel klicken.
 					</p>
 					<p>
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Beside the timeline, all information is from since you started tracking this contact (unless noted otherwise).
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Abgesehen von der Zeitleiste stammen alle Informationen aus der Zeit, in der Sie diesen Kontakt erfasst haben (sofern nicht anders angegeben).
 					</p>
 					<p data-ng-show="pendingAccounts.length > 0">
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {{pendingAccounts.length}} contacts will be verified within 5-10 minutes, <a data-ng-click="refreshContent()">reload data</a> to check again.
-					</p>
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						<pre>{{pendingAccounts.length}}</pre>Kontakte werden innerhalb von 5-10 Minuten überprüft<a data-ng-click="refreshContent()">Daten neu laden</a> erneut zu überprüfen.
+						<pre>{{pendingAccounts.length}}</pre>
 					<p class="whatsspy-header-options">
-						<span class="btn btn-default" data-toggle="modal" data-target="#addNumber"><span class="glyphicon glyphicon-plus"></span> Add Contact</span> 
-						<a class="btn btn-default" href="https://maikel.pro/service/whatsspy/?importGoogleContacts&warning" target="_blank"><span class="glyphicon glyphicon-refresh"></span> Import Google Contacts</a> 
-						<span class="btn btn-default" data-toggle="modal" data-target="#manageGroups"><span class="glyphicon glyphicon-pencil"></span> Manage groups</span> 
-						<span class="btn btn-default" data-toggle="modal" data-target="#managePerformance"><span class="glyphicon glyphicon-wrench"></span> Performance options</span> 
+						<span class="btn btn-default" data-toggle="modal" data-target="#addNumber"><span class="glyphicon glyphicon-plus"></span>Kontakt hinzufügen</span> 
+						<a class="btn btn-default" href="#" target="_blank"><span class="glyphicon glyphicon-refresh"></span>Import von...</a> 
+						<span class="btn btn-default" data-toggle="modal" data-target="#manageGroups"><span class="glyphicon glyphicon-pencil"></span>Gruppen verwalten</span> 
+						<span class="btn btn-default" data-toggle="modal" data-target="#managePerformance"><span class="glyphicon glyphicon-wrench"></span>Optimieren</span> 
 					</p>
 				</div>
 			</div>
