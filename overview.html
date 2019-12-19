@@ -9,14 +9,14 @@
 		<div class="row" data-ng-hide="tokenAuth != null">
 			<div class="col-md-3">
 				<div class="well whatsspy-header-box">
-					<strong><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filters</strong>
+					<strong><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Suche eingrentzen</strong>
 					<br />
 					<br />
 					<p>
-						<input type="text" class="form-control" id="filterPhonenumber"data-ng-model="filterPhonenumber" ng-model-options="{debounce: 1000}" placeholder="Search by phone number ...">
+						<input type="text" class="form-control" id="filterPhonenumber"data-ng-model="filterPhonenumber" ng-model-options="{debounce: 1000}" placeholder="Suche nach Nummer...">
 					</p>
 					<p>
-						<input type="text" class="form-control" id="filterName" data-ng-model="filterName"  ng-model-options="{debounce: 1000}" placeholder="Search by name ..." title="Use &lt;name&gt;|&lt;name&gt; to filter on multiple names." data-toggle="tooltip" data-placement="bottom">
+						<input type="text" class="form-control" id="filterName" data-ng-model="filterName"  ng-model-options="{debounce: 1000}" placeholder="Suche nach Namen..." title="Use &lt;name&gt;|&lt;name&gt; to filter on multiple names." data-toggle="tooltip" data-placement="bottom">
 					</p>
 					<p>
 						<select class="form-control" data-ng-model="filterGroup" data-ng-options="group.gid as group.name for group in groups" ></select>
